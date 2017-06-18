@@ -1,18 +1,59 @@
 import requests
 from bs4 import BeautifulSoup
-
 html = ""
+guest = []
+
+
+
 with open("/Users/user/Desktop/pagina-completa.htm", 'r')as input:
     html = input.read()
 
 
 soup = BeautifulSoup(html, 'lxml')
 
-listaUl = soup.findChildren("ul", {"class" : "customer-details"})
-
-itens = soup.findChildren("ul" ,{"class", "customer-details"})
-
-
-newSoup = BeautifulSoup(str(itens[0]), 'lxml')
+ulChildren = soup.find("div", {"class", "content"})
+# ulChildren = BeautifulSoup(ulChildren.finfChildren("ul"), 'lxml')
 
 
+# ========Customer details div
+customerDetail = ""
+for line in soup.find_all("ul", {"class", "customer-details"}):
+    customerDetail = customerDetail + str(line)
+
+customerDetail = BeautifulSoup(customerDetail, 'lxml')
+
+
+
+# =============  payment div =========================
+payment = soup.find('div', {'prices-total'})
+payment = BeautifulSoup(str(payment.findChildren("li")), 'lxml')
+
+
+for x in range(1, len(customerDetail.find_all("li")), 2):
+    guest.append(customerDetail.find_all("li")[x].text)
+
+print "---------------------------------------"
+#  ---------- - -----NAME------------- - - -----"
+print guest[0]
+# -=-=-=-==-=-=EMAIL -=-=-=-=-=-=-
+print str(guest[1]).strip(" ")
+
+# ---------------telephone
+print guest[2]
+
+
+print "- - - - - - - - - -check in - - - - - - - - - - - - -"
+# -------------------- check in ---------------
+print ulChildren.findChildren('ul')[1].findChildren('li')[0].text
+
+print "- - - - - - - - - NIGHTS- - - - - - - - - - - - - -"
+# --------------------NIGHTS ---------------
+print len(ulChildren.findChildren('ul')) - 1
+
+print "- - - - - - - - - Adults- - - - - - - - - - - - - -"
+# --------------------NIGHTS ---------------
+print ulChildren.findChildren('ul')[1].findChildren('li')[3].text
+
+# --$-$-$-$-$-$-$-$-$- TOTAL ---------------
+print "- - - - - - - - - TOTAL- - - - - - - - - - - - - -"
+print str(payment.findChildren('li')[7].text).split(" ")[1]
