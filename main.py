@@ -1,19 +1,17 @@
 import requests
 from bs4 import BeautifulSoup
+# from BeautifulSoup import *
 html = ""
 guest = []
 
 
-
-with open("/Users/user/Desktop/pagina-completa.htm", 'r')as input:
+with open("C:/Users/Mariano/Desktop/test-scrapper/georgia.html", 'r')as input:
     html = input.read()
-
 
 soup = BeautifulSoup(html, 'lxml')
 
 ulChildren = soup.find("div", {"class", "content"})
 # ulChildren = BeautifulSoup(ulChildren.finfChildren("ul"), 'lxml')
-
 
 # ========Customer details div
 customerDetail = ""
@@ -21,8 +19,6 @@ for line in soup.find_all("ul", {"class", "customer-details"}):
     customerDetail = customerDetail + str(line)
 
 customerDetail = BeautifulSoup(customerDetail, 'lxml')
-
-
 
 # =============  payment div =========================
 payment = soup.find('div', {'prices-total'})
